@@ -25,11 +25,11 @@ class Nft
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $imageUrl = null;
-
     #[ORM\Column]
     private ?float $price = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $imageUrl = null;
 
     public function getId(): ?int
     {
@@ -72,17 +72,7 @@ class Nft
         return $this;
     }
 
-    public function getImageUrl(): ?string
-    {
-        return $this->imageUrl;
-    }
-
-    public function setImageUrl(string $imageUrl): static
-    {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
+  
 
     public function getPrice(): ?float
     {
@@ -92,6 +82,18 @@ class Nft
     public function setPrice(float $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(string $imageUrl): static
+    {
+        $this->imageUrl = $imageUrl;
 
         return $this;
     }
