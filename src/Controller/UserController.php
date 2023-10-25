@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,8 +8,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
+
 {
-    #[Route('api/user', name: 'app_user')]
+    #[Route('api/users', name: 'app_user', methods: ["GET"])]
     #[IsGranted("ROLE_ADMIN")]
     public function index(SerializerInterface $serializer): Response
     {

@@ -6,6 +6,8 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\NftRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: NftRepository::class)]
 #[ApiResource]
@@ -17,18 +19,29 @@ class Nft
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 10,
+        max: 50,
+        minMessage: 'The number of the description is less than {{limit}} characters ',
+        maxMessage: 'The number of the description exceeds {{limit}} characters',
+    )]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank]
     private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $imageUrl = null;
 
     public function getId(): ?int

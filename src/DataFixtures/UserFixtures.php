@@ -25,6 +25,8 @@ class UserFixtures extends Fixture
         $user->setCountry("Oromia");
         $user->setCity("Finfine");
         $user->setNumber("0922060394");
+        $user->setRoles(["ROLE_USER"]);
+
 
         $admin = new User();
         $admin->setUsername("admin");
