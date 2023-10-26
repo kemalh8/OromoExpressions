@@ -8,4 +8,4 @@ auth:
     methods: ['POST']
 register:
     path: /register
-    controller: App\Controller\RegistrationController::register
+    methods: ['POST']
