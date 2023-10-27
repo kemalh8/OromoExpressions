@@ -20,7 +20,7 @@ security:
             pattern: ^/_(profiler|wdt)
             security: false
         main:
-            #stateless: true
+            stateless: true
             provider: users
             json_login:
                 check_path: auth # The name in routes.yaml is enough for mapping
@@ -40,10 +40,15 @@ security:
                 lifetime: 604800
                 path: /
                 always_remember_me: true
+
     access_control:
         - { path: ^/$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
         - { path: ^/api/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI docs
+        - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/auth, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, roles: ROLE_ADMIN }
+ 
+
+
         # Add other access control rules as needed for your application.

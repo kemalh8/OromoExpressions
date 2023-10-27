@@ -7,5 +7,5 @@ auth:
     path: /auth
     methods: ['POST']
 register:
-    path: /register
+    path: /api/register
     methods: ['POST']
