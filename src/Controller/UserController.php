@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\RoleManager; // Import the RoleManager service
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,18 +12,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface; 
 
-
+#[IsGranted("ROLE_ADMIN")]
 class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager; // Adding the EntityManager
+///////// à decommenter apres*private RoleManager $roleManager; // Inject the RoleManager service
 
-    public function __construct(EntityManagerInterface $entityManager)
+
+    public function __construct(EntityManagerInterface $entityManager, /*RoleManager $roleManager*/)
     {
         $this->entityManager = $entityManager;
+///////// à decommenter apres* $this->roleManager = $roleManager;
+
     }
 
     #[Route('api/users', name: 'app_user', methods: ['GET'])]
-    #[IsGranted("ROLE_ADMIN")]
     public function index(SerializerInterface $serializer): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'You are not allowed to access this resource.');
@@ -44,8 +48,8 @@ class UserController extends AbstractController
         $username = $data['username'];
         $email = $data['email'];
         $plainPassword = $data['password'];
-        $country = $data['country'];
-        $city = $data['city'];
+        $firstName = $data['firstname'];
+        $lastName = $data['lastname'];
         $number = $data['number'];
 
         if (empty($username) || empty($email) || empty($plainPassword)) {
@@ -56,8 +60,8 @@ class UserController extends AbstractController
         $user = new User();
         $user->setUsername($username);
         $user->setEmail($email);
-        $user->setCountry($country);
-        $user->setCity($city);
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
         $user->setNumber($number);
 
         // i have to hash the password for security
@@ -74,4 +78,63 @@ class UserController extends AbstractController
 
         return $this->json(['message' => 'You\'re registered successfully! Time to log in or authenticate !!']);
     }
+
+
+
+    /*
+    // Additional method for handling selling NFTs
+    #[Route('/api/sell-nft', name: 'sell_nft', methods: ['POST'])]
+    public function sellNFT(Request $request, User $user, RoleManager $roleManager)
+    {
+        // Logic for selling NFT...
+        $nftId = $request->get('nft_id'); // Assuming you receive the NFT ID in the request
+        
+        // Check if the user is the owner of the NFT (you may need to add security checks)
+        $nft = $this->getDoctrine()->getRepository(Nft::class)->find($nftId);
+
+        if (!$nft || $nft->getUser() !== $user) {
+            return $this->json(['message' => 'You are not the owner of this NFT.'], 403);
+        }
+
+        // Perform the sale logic, update NFT status, transfer payment, etc.
+        // ...
+
+        // After a successful sale, assign the seller role
+        $roleManager->assignSellerRole($user);
+
+        // Rest of the logic...
+
+        return $this->json(['message' => 'NFT sold successfully!']);
+    }
+
+
+
+    
+    // Additional method for handling buying NFTs
+    #[Route('/api/buy-nft', name: 'buy_nft', methods: ['POST'])]
+    public function buyNFT(Request $request, User $user, RoleManager $roleManager)
+    {
+        // Logic for buying NFT...
+        $nftId = $request->get('nft_id'); // Assuming you receive the NFT ID in the request
+        
+        // Check if the NFT is available for purchase and not owned by the user
+///////* $nft = $this->getDoctrine()->getRepository(Nft::class)->find($nftId);
+
+        if (!$nft || $nft->getUser() === $user || $nft->getStatus() !== 'available') {
+            return $this->json(['message' => 'The NFT is not available for purchase.'], 403);
+        }
+
+        // Perform the purchase logic, transfer payment, update NFT ownership, etc.
+        // ...
+
+        // After a successful purchase, assign the buyer role
+        $roleManager->assignBuyerRole($user);
+
+        // Rest of the logic...
+
+        return $this->json(['message' => 'NFT bought successfully!']);
+    }
+
+*/
+
 }

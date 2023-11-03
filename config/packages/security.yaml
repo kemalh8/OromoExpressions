@@ -1,5 +1,11 @@
 # api/config/packages/security.yaml
 security:
+    role_hierarchy:
+        ROLE_USER: ROLE_GUEST
+        ROLE_SELLER: ROLE_USER
+        ROLE_BUYER: ROLE_USER
+        ROLE_ADMIN: [ROLE_SELLER, ROLE_BUYER]
+
     # https://symfony.com/doc/current/security.html#c-hashing-passwords
     password_hashers:
         App\Entity\User: 'auto'
