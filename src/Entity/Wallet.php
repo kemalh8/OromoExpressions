@@ -26,11 +26,11 @@ class Wallet
     private ?string $balance = null;
 
     #[ORM\OneToMany(mappedBy: 'wallet_id', targetEntity: Transaction::class)]
-    private Collection $transaactions;
+    private Collection $transactions;
 
     public function __construct()
     {
-        $this->transaactions = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     
@@ -66,27 +66,27 @@ class Wallet
     /**
      * @return Collection<int, Transaction>
      */
-    public function getTransaactions(): Collection
+    public function getTransactions(): Collection
     {
-        return $this->transaactions;
+        return $this->transactions;
     }
 
-    public function addTransaaction(Transaction $transaaction): static
+    public function addTransaction(Transaction $transaction): static
     {
-        if (!$this->transaactions->contains($transaaction)) {
-            $this->transaactions->add($transaaction);
-            $transaaction->setWalletId($this);
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setWalletId($this);
         }
 
         return $this;
     }
 
-    public function removeTransaaction(Transaction $transaaction): static
+    public function removeTransaction(Transaction $transaction): static
     {
-        if ($this->transaactions->removeElement($transaaction)) {
+        if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
-            if ($transaaction->getWalletId() === $this) {
-                $transaaction->setWalletId(null);
+            if ($transaction->getWalletId() === $this) {
+                $transaction->setWalletId(null);
             }
         }
 

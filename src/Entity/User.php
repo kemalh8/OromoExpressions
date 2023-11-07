@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
@@ -32,18 +34,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(["registration"])]
     private ?string $password = null;
-
+    
     #[ORM\Column(length: 255)]
+    #[Groups(["registration"])]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Groups(["registration"])]
     private ?int $number = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["registration"])]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["registration"])]
     private ?string $last_name = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

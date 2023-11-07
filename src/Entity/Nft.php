@@ -34,10 +34,7 @@ class Nft
     )]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank]
-    private ?\DateTimeInterface $creationDate = null;
-
+    
     #[ORM\Column]
     #[Assert\NotBlank]
     private ?float $price = null;
@@ -53,6 +50,7 @@ class Nft
     private ?string $status = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column]
@@ -128,19 +126,6 @@ class Nft
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeInterface
-    {
-        return $this->creationDate;
-    }
-
-    public function setCreationDate(\DateTimeInterface $creationDate): static
-    {
-        $this->creationDate = $creationDate;
-
-        return $this;
-    }
-
-  
 
     public function getPrice(): ?float
     {

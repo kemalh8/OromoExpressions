@@ -40,7 +40,8 @@ class UserController extends AbstractController
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     public function register(
         Request $request,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        SerializerInterface $serializer
     ): JsonResponse {
         // Step 1: Receive and Validate Input
         $data = json_decode($request->getContent(), true);
@@ -76,7 +77,9 @@ class UserController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->json(['message' => 'You\'re registered successfully! Time to log in or authenticate !!']);
+        $userData = $serializer->serialize($user, 'json', ['groups' => 'registration']);
+        $data = json_decode($userData);
+        return $this->json(['message' => 'You\'re registered successfully! Time to log in or authenticate !!', 'user' =>$data], 2);
     }
 
 

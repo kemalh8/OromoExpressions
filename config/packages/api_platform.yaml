@@ -10,3 +10,6 @@ api_platform:
             standard_put: true
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
+    
+    enable_swagger: true
+
